@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FloatingHearts } from './components/FloatingHearts';
 import { RosePetals } from './components/RosePetals';
 import { HeroSection } from './components/HeroSection';
@@ -8,14 +8,18 @@ import { ProposalSection } from './components/ProposalSection';
 import { PromiseSection } from './components/PromiseSection';
 import { LoveWall } from './components/LoveWall';
 import { LoveStory } from './components/LoveStory';
+import { GallerySection } from './components/GallerySection';
+import { FutureDreams } from './components/FutureDreams';
 import { MusicPlayer } from './components/MusicPlayer';
 
 export enum AppState {
   INITIAL,
   QUIZ,
   PROPOSAL,
+  GALLERY,
   PROMISES,
   LOVE_WALL,
+  DREAMS,
   STORY
 }
 
@@ -34,8 +38,10 @@ const App: React.FC = () => {
       AppState.INITIAL,
       AppState.QUIZ,
       AppState.PROPOSAL,
+      AppState.GALLERY,
       AppState.PROMISES,
       AppState.LOVE_WALL,
+      AppState.DREAMS,
       AppState.STORY
     ];
     const currentIndex = sequence.indexOf(state);
@@ -47,45 +53,51 @@ const App: React.FC = () => {
 
   if (!hasStarted) {
     return (
-      <div className="fixed inset-0 bg-black flex flex-col items-center justify-center text-center p-8">
-        <div className="animate-heart-beat text-8xl mb-12">💝</div>
-        <h1 className="text-5xl md:text-8xl font-cursive rose-gold-gradient glow-text mb-6">Saif & Fiza</h1>
-        <p className="text-pink-100 font-serif text-xl mb-12 max-w-lg italic opacity-80 leading-relaxed">
-          "Fiza, you are not just my fiancée, you are my destiny. Step into our world of love and see the journey of a boy who changed everything for you..."
-        </p>
-        <button
-          onClick={startExperience}
-          className="btn-luxury px-12 py-5 rounded-full text-white font-serif text-2xl shadow-2xl tracking-widest"
-        >
-          ENTER OUR STORY ❤️
-        </button>
+      <div className="fixed inset-0 bg-black flex flex-col items-center justify-center text-center p-8 overflow-hidden">
+        <div className="relative z-10 animate-in fade-in zoom-in duration-1000">
+          <div className="text-8xl md:text-9xl mb-12 animate-float drop-shadow-[0_0_30px_rgba(255,182,197,0.5)]">💝</div>
+          <h1 className="text-6xl md:text-[9rem] font-cursive rose-gold-gradient glow-text mb-6">Saif & Fiza</h1>
+          <p className="text-pink-100 font-serif text-xl md:text-2xl mb-16 max-w-2xl mx-auto italic opacity-80 leading-relaxed">
+            "Fiza, my fiancée, you are my greatest achievement. Witness the transformation your love created..."
+          </p>
+          <button
+            onClick={startExperience}
+            className="btn-luxury px-16 py-6 rounded-full text-white font-serif text-2xl shadow-2xl tracking-[0.2em] relative overflow-hidden group"
+          >
+            <span className="relative z-10">ENTER OUR MAGIC ❤️</span>
+            <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+          </button>
+        </div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(183,110,121,0.2),transparent)] opacity-50"></div>
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen w-full bg-transparent selection:bg-pink-500 selection:text-white pb-20">
+    <div className="relative min-h-screen w-full bg-transparent selection:bg-pink-500 selection:text-white pb-10">
       <FloatingHearts />
       <RosePetals />
       <MusicPlayer isPlaying={isMusicPlaying} togglePlay={() => setIsMusicPlaying(!isMusicPlaying)} />
 
-      <main className="relative z-20 max-w-6xl mx-auto px-4 pt-10">
+      <main className="relative z-20 max-w-7xl mx-auto px-4 pt-10 perspective-1000">
         {state === AppState.INITIAL && <HeroSection onProceed={handleNext} />}
         {state === AppState.QUIZ && <QuizSection onComplete={handleNext} />}
         {state === AppState.PROPOSAL && <ProposalSection onComplete={handleNext} />}
+        {state === AppState.GALLERY && <GallerySection onComplete={handleNext} />}
         {state === AppState.PROMISES && <PromiseSection onComplete={handleNext} />}
         {state === AppState.LOVE_WALL && <LoveWall onComplete={handleNext} />}
+        {state === AppState.DREAMS && <FutureDreams onComplete={handleNext} />}
         {state === AppState.STORY && (
           <div className="animate-in fade-in duration-1000 slide-in-from-bottom-10">
              <LoveStory />
-             <footer className="py-20 text-center text-pink-300 font-serif mt-20 border-t border-white/10 glass-card mx-4 rounded-t-[3rem]">
-                <div className="text-7xl mb-10 animate-heart-beat">💍</div>
-                <h3 className="text-4xl font-cursive glow-text mb-8">Our Journey Has Just Begun</h3>
-                <div className="max-w-2xl mx-auto space-y-4 text-lg italic opacity-80 mb-12">
-                   <p>"No matter what happens… no matter how hard life gets… I will always choose you."</p>
-                   <p className="text-rose-gold-gradient font-bold text-xl">From Zero… To Software Engineer… To Your Forever Husband.</p>
+             <footer className="py-24 text-center text-pink-300 font-serif mt-20 border-t border-white/5 glass-card mx-4 rounded-t-[4rem]">
+                <div className="text-8xl mb-12 animate-float">💍</div>
+                <h3 className="text-5xl font-cursive glow-text mb-10">Humesha Ke Liye... Forever</h3>
+                <div className="max-w-3xl mx-auto space-y-6 text-xl italic opacity-80 mb-16 px-6 leading-relaxed">
+                   <p>"No matter how hard life gets... I will always choose you. Every single time."</p>
+                   <p className="text-rose-gold-gradient font-bold text-2xl">From a Boy in 8th Class... To your Software Engineer Husband.</p>
                 </div>
-                <p className="text-sm opacity-50 tracking-[0.4em] uppercase">Made With Infinite Love By Saif ❤️</p>
+                <p className="text-sm opacity-40 tracking-[0.6em] uppercase">Made With Eternal Love By Saif ❤️</p>
              </footer>
           </div>
         )}
